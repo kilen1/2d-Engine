@@ -4,20 +4,20 @@ project(2DGameEngine VERSION 1.0.0 LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# Простые опции - все необязательные функции отключены
-option(ENGINE_EDITOR "Build with editor" OFF)
-option(ENGINE_TOOLS "Build with tools" OFF)
-option(ENGINE_SCRIPTING "Enable scripting support" OFF)
-option(ENGINE_NETWORKING "Enable networking support" OFF)  # ОТКЛЮЧЕНО
-option(ENGINE_PHYSICS "Enable physics engine" OFF)         # ОТКЛЮЧЕНО
+# Engine feature options
+option(ENGINE_EDITOR "Build with editor" ON)
+option(ENGINE_TOOLS "Build with tools" ON)
+option(ENGINE_SCRIPTING "Enable scripting support" ON)
+option(ENGINE_NETWORKING "Enable networking support" ON)
+option(ENGINE_PHYSICS "Enable physics engine" ON)
 option(ENGINE_AUDIO "Enable audio engine" ON)
 option(ENGINE_UI "Enable UI system" ON)
 option(ENGINE_DEBUG "Build with debug symbols" ON)
 
-# Настройки сборки
+# Compiler settings
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
-# Поиск только необходимых зависимостей
+# Find required packages
 find_package(OpenGL REQUIRED)
 find_package(SDL2 REQUIRED)
 find_package(SDL2_image REQUIRED)
@@ -27,9 +27,23 @@ if(ENGINE_AUDIO)
     find_package(SDL2_mixer REQUIRED)
 endif()
 
-# Include директории
+if(ENGINE_PHYSICS)
+    find_package(Box2D REQUIRED)
+endif()
+
+if(ENGINE_SCRIPTING)
+    find_package(sol2 REQUIRED)
+endif()
+
+# Include directories
 include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/Core
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/Graphics
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/Audio
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/UI
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/Scene
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/Editor
     ${SDL2_INCLUDE_DIRS}
     ${SDL2_IMAGE_INCLUDE_DIRS}
     ${SDL2_TTF_INCLUDE_DIRS}
@@ -39,27 +53,30 @@ if(ENGINE_AUDIO)
     include_directories(${SDL2_MIXER_INCLUDE_DIRS})
 endif()
 
+if(ENGINE_PHYSICS)
+    include_directories(${BOX2D_INCLUDE_DIRS})
+endif()
+
+if(ENGINE_SCRIPTING)
+    include_directories(${SOL2_INCLUDE_DIRS})
+endif()
+
 include_directories(${OPENGL_INCLUDE_DIRS})
 
-# Простая ImGui сборка
+# ImGui library
 file(GLOB IMGUI_SOURCES 
     third_party/imgui/*.cpp
     third_party/imgui/backends/imgui_impl_sdl2.cpp
     third_party/imgui/backends/imgui_impl_opengl3.cpp
 )
 
-file(GLOB IMGUI_HEADERS
-    third_party/imgui/*.h
-    third_party/imgui/backends/*.h
-)
-
-add_library(imgui STATIC ${IMGUI_SOURCES} ${IMGUI_HEADERS})
+add_library(imgui STATIC ${IMGUI_SOURCES})
 target_include_directories(imgui PUBLIC
     third_party/imgui
     third_party/imgui/backends
 )
 
-# Простые заголовочные библиотеки (без сборки)
+# Header-only libraries
 add_library(json INTERFACE)
 target_include_directories(json INTERFACE third_party/json/include)
 
@@ -72,26 +89,39 @@ target_include_directories(entt INTERFACE third_party/entt/src)
 add_library(glm INTERFACE)
 target_include_directories(glm INTERFACE third_party/glm)
 
-# Основные файлы движка
-file(GLOB_RECURSE ENGINE_SOURCES 
-    "src/*.cpp"
-    "src/Core/*.cpp"
-    "src/Graphics/*.cpp"
-    "src/UI/*.cpp"
-)
+# Engine source files
+file(GLOB_RECURSE CORE_SOURCES "src/Core/*.cpp")
+file(GLOB_RECURSE ENGINE_SOURCES "src/*.cpp")
+list(APPEND ENGINE_SOURCES ${CORE_SOURCES})
 
+# Additional sources based on features
 if(ENGINE_AUDIO)
     file(GLOB_RECURSE AUDIO_SOURCES "src/Audio/*.cpp")
     list(APPEND ENGINE_SOURCES ${AUDIO_SOURCES})
 endif()
 
-# Основное приложение
+if(ENGINE_PHYSICS)
+    file(GLOB_RECURSE PHYSICS_SOURCES "src/Physics/*.cpp")
+    list(APPEND ENGINE_SOURCES ${PHYSICS_SOURCES})
+endif()
+
+if(ENGINE_SCRIPTING)
+    file(GLOB_RECURSE SCRIPT_SOURCES "src/Scripting/*.cpp")
+    list(APPEND ENGINE_SOURCES ${SCRIPT_SOURCES})
+endif()
+
+if(ENGINE_EDITOR)
+    file(GLOB_RECURSE EDITOR_SOURCES "src/Editor/*.cpp")
+    list(APPEND ENGINE_SOURCES ${EDITOR_SOURCES})
+endif()
+
+# Main executable
 add_executable(2DGameEngine
     ${ENGINE_SOURCES}
     main.cpp
 )
 
-# Подключение библиотек
+# Link libraries
 target_link_libraries(2DGameEngine
     ${SDL2_LIBRARIES}
     ${SDL2_IMAGE_LIBRARIES}
@@ -104,7 +134,15 @@ if(ENGINE_AUDIO)
     target_link_libraries(2DGameEngine ${SDL2_MIXER_LIBRARIES})
 endif()
 
-# Настройки для Windows
+if(ENGINE_PHYSICS)
+    target_link_libraries(2DGameEngine ${BOX2D_LIBRARIES})
+endif()
+
+if(ENGINE_SCRIPTING)
+    target_link_libraries(2DGameEngine ${SOL2_LIBRARIES})
+endif()
+
+# Platform-specific libraries
 if(WIN32)
     target_link_libraries(2DGameEngine 
         opengl32 
@@ -114,16 +152,27 @@ if(WIN32)
         version
     )
     add_definitions(-D_CRT_SECURE_NO_WARNINGS)
+elseif(UNIX AND NOT APPLE)
+    target_link_libraries(2DGameEngine X11 Xi Xcursor Xrandr Xinerama Xxf86vm dl m pthread)
+elseif(APPLE)
+    target_link_libraries(2DGameEngine "-framework Cocoa" "-framework IOKit" "-framework CoreVideo")
 endif()
 
-# Определения компилятора
+# Compiler definitions
 add_definitions(
     -DIMGUI_DISABLE_OBSOLETE_FUNCTIONS
     -DSTB_IMAGE_IMPLEMENTATION
     -DSTB_IMAGE_WRITE_IMPLEMENTATION
 )
 
-# Копирование ресурсов
+if(ENGINE_DEBUG)
+    target_compile_definitions(2DGameEngine PRIVATE DEBUG=1)
+    set(CMAKE_BUILD_TYPE Debug)
+else()
+    set(CMAKE_BUILD_TYPE Release)
+endif()
+
+# Copy assets after build
 file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/bin/assets)
 add_custom_command(TARGET 2DGameEngine POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory
@@ -131,13 +180,17 @@ add_custom_command(TARGET 2DGameEngine POST_BUILD
     ${CMAKE_BINARY_DIR}/bin/assets
 )
 
+# Print build configuration
 message(STATUS "========================================")
-message(STATUS "2D Game Engine - Minimal Configuration")
+message(STATUS "2D Game Engine Configuration")
 message(STATUS "========================================")
 message(STATUS "SDL2: YES")
 message(STATUS "OpenGL: YES")
 message(STATUS "ImGui: Built from source")
 message(STATUS "Audio: ${ENGINE_AUDIO}")
-message(STATUS "Networking: DISABLED")
-message(STATUS "Physics: DISABLED")
+message(STATUS "Physics: ${ENGINE_PHYSICS}")
+message(STATUS "Scripting: ${ENGINE_SCRIPTING}")
+message(STATUS "Editor: ${ENGINE_EDITOR}")
+message(STATUS "Networking: ${ENGINE_NETWORKING}")
+message(STATUS "Build Type: ${CMAKE_BUILD_TYPE}")
 message(STATUS "========================================")
