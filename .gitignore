@@ -1,24 +1,20 @@
 ```
 # Build artifacts
-build/
-cmake-build-*/
-CMakeFiles/
-CMakeCache.txt
-Makefile
-compile_commands.json
-
-# Dependencies
-external/
-lib/
-libs/
-
-# Compiled binaries
+*.o
+*.obj
 *.a
+*.lib
 *.so
-*.dylib
 *.dll
 *.exe
 *.out
+build/
+dist/
+cmake-build-*/
+
+# Dependencies
+vendor/
+external/
 
 # IDE files
 .vscode/
@@ -26,29 +22,25 @@ libs/
 *.swp
 *.swo
 
-# System files
-.DS_Store
-Thumbs.db
-
 # Logs
 *.log
-*.tmp
 
-# Coverage
-coverage/
-htmlcov/
-.coverage
+# Temp files
+*.tmp
 
 # Environment
 .env
 .env.local
 *.env.*
 
-# Python artifacts (if any Python files exist in project)
-__pycache__/
-*.pyc
-*.pyo
-.Python
-*.so
-*.egg-info/
+# Coverage
+coverage/
+htmlcov/
+.coverage
+
+# CMake specific
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
 ```
