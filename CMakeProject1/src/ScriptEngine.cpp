@@ -27,7 +27,7 @@
 #include "../include/InventorySystem.h"
 #include "../include/DialogSystem.h"
 #include "../include/AISystem.h"
-#include "../include/PrefabSystem.h"
+#include "../include/Serialization/PrefabSystem.h"
 #include "../include/ModdingSystem.h"
 
 #include <sol/sol.hpp>
