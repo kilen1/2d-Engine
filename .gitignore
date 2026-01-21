@@ -1,33 +1,32 @@
 ```
-# Compiled and build artifacts
-*.o
-*.obj
-*.out
+# Build artifacts
 build/
-dist/
+cmake-build-*/
+CMakeFiles/
+CMakeCache.txt
+Makefile
+*.cmake
+*.o
+*.a
+*.so
+*.dylib
+*.dll
+*.exe
+*.out
 
 # Dependencies
-venv/
-.venv/
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-*.so
-*.dll
-*.a
-*.lib
+third_party/
+vendor/
 
 # Logs and temp files
 *.log
 *.tmp
 *.swp
-*.swo
 
 # Environment
 .env
 .env.local
-*.env.*
+.env.*
 
 # Editors
 .vscode/
@@ -44,7 +43,12 @@ coverage/
 htmlcov/
 .coverage
 
-# Testing
-.mypy_cache/
-.pytest_cache/
+# Python specific
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+.PyInstaller/
 ```

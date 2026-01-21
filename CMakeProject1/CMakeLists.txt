@@ -4,6 +4,10 @@ project(2DGameEngine VERSION 1.0.0 LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+# Set up vcpkg toolchain
+set(VCPKG_ROOT "C:/Users/Zver/vcpkg")
+set(CMAKE_TOOLCHAIN_FILE "${VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake" CACHE STRING "")
+
 # Engine feature options
 option(ENGINE_EDITOR "Build with editor" ON)
 option(ENGINE_TOOLS "Build with tools" ON)
@@ -35,6 +39,16 @@ if(ENGINE_SCRIPTING)
     find_package(sol2 REQUIRED)
 endif()
 
+# Find additional packages that might be available through vcpkg
+find_package(nlohmann_json CONFIG)
+find_package(spdlog CONFIG)
+find_package(fmt CONFIG)
+find_package(nativefiledialog-extended CONFIG)
+find_package(libzip CONFIG)
+find_package(CURL CONFIG)
+find_package(OpenSSL CONFIG)
+find_package(Steamworks CONFIG)
+
 # Include directories
 include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/include
@@ -44,6 +58,18 @@ include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/include/UI
     ${CMAKE_CURRENT_SOURCE_DIR}/include/Scene
     ${CMAKE_CURRENT_SOURCE_DIR}/include/Editor
+    ${CMAKE_CURRENT_SOURCE_DIR}/third_party
+    ${CMAKE_CURRENT_SOURCE_DIR}/third_party/imnodes
+    ${CMAKE_CURRENT_SOURCE_DIR}/third_party/TextEditor
+    ${CMAKE_CURRENT_SOURCE_DIR}/third_party/nativefiledialog-extended/src/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/third_party/json/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/third_party/entt/src
+    ${CMAKE_CURRENT_SOURCE_DIR}/third_party/spdlog/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/third_party/fmt/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/third_party/libzip/lib
+    ${CMAKE_CURRENT_SOURCE_DIR}/third_party/curl/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/third_party/openssl/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/third_party/steamworks-sdk
     ${SDL2_INCLUDE_DIRS}
     ${SDL2_IMAGE_INCLUDE_DIRS}
     ${SDL2_TTF_INCLUDE_DIRS}
@@ -89,6 +115,39 @@ target_include_directories(entt INTERFACE third_party/entt/src)
 add_library(glm INTERFACE)
 target_include_directories(glm INTERFACE third_party/glm)
 
+# Third-party libraries from local sources
+add_library(imnodes STATIC
+    third_party/imnodes/imnodes.cpp
+    third_party/imnodes/imnodes_internal.h
+    third_party/imnodes/imnodes.h
+)
+target_include_directories(imnodes PUBLIC
+    third_party/imnodes
+)
+
+add_library(nativefiledialog-extended INTERFACE)
+target_include_directories(nativefiledialog-extended INTERFACE
+    third_party/nativefiledialog-extended/src/include
+)
+
+add_library(spdlog INTERFACE)
+target_include_directories(spdlog INTERFACE third_party/spdlog/include)
+
+add_library(fmt INTERFACE)
+target_include_directories(fmt INTERFACE third_party/fmt/include)
+
+add_library(libzip INTERFACE)
+target_include_directories(libzip INTERFACE third_party/libzip/lib)
+
+add_library(curl INTERFACE)
+target_include_directories(curl INTERFACE third_party/curl/include)
+
+add_library(openssl INTERFACE)
+target_include_directories(openssl INTERFACE third_party/openssl/include)
+
+add_library(steamworks INTERFACE)
+target_include_directories(steamworks INTERFACE third_party/steamworks-sdk)
+
 # Engine source files
 file(GLOB_RECURSE CORE_SOURCES "src/Core/*.cpp")
 file(GLOB_RECURSE ENGINE_SOURCES "src/*.cpp")
@@ -128,6 +187,15 @@ target_link_libraries(2DGameEngine
     ${SDL2_TTF_LIBRARIES}
     ${OPENGL_LIBRARIES}
     imgui
+    imnodes
+    spdlog::spdlog
+    fmt::fmt
+    nfd
+    zip
+    curl
+    ssl
+    crypto
+    steam_api
 )
 
 if(ENGINE_AUDIO)
