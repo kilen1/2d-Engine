@@ -5,7 +5,17 @@
         "sdl2",
         "sdl2-image",
         "sdl2-ttf",
+        "sdl2-mixer",
         "glew",
-        "opengl"
+        "opengl",
+        "box2d",
+        "sol2",
+        "glm",
+        "entt",
+        "nlohmann-json",
+        "stb",
+        "imgui",
+        "spdlog",
+        "fmt"
     ]
 }
