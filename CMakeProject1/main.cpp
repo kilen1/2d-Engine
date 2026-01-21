@@ -1,7 +1,7 @@
-#include "include/Engine.h"
-#include "include/GameObject.h"
-#include "include/SpriteRenderer.h"
-#include "include/Transform.h"
+#include "../include/Engine.h"
+#include "../include/GameObject.h"
+#include "../include/SpriteRenderer.h"
+#include "../include/Transform.h"
 #include <iostream>
 
 int main(int argc, char* argv[]) {

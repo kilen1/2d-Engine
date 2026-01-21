@@ -1,10 +1,10 @@
 #pragma once
 
-#include "Math/Vector2.h"
-#include "Math/Rect.h"
-#include "Math/Circle.h"
-#include "Math/Polygon.h"
-#include "Core/Component.h"
+#include "../Math/Vector2.h"
+#include "../Math/Rect.h"
+#include "../Math/Circle.h"
+#include "../Math/Polygon.h"
+#include "../Core/Component.h"
 #include <vector>
 #include <memory>
 #include <unordered_map>
