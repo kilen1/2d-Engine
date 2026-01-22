@@ -289,7 +289,7 @@ namespace CmakeProject1 {
     }
 
     int AISystem::GetActiveBrainCount() const {
-        return aiBrains.size();
+        return static_cast<int>(aiBrains.size());
     }
 
 }
