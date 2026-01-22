@@ -27,9 +27,6 @@ class TextEditor;
 // Forward declarations for needed types
 namespace CmakeProject1 {
     class GameObject;
-    struct Vector2;
-    struct Vector3;
-    struct Color;
     
     // Forward declare enum classes
     enum class ShaderType;
