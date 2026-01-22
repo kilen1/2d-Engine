@@ -4,6 +4,7 @@
 #include <unordered_map>
 #include <functional>
 #include <vector>
+#include <string>
 
 namespace CmakeProject1 {
 
