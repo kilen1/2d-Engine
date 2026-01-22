@@ -44,6 +44,7 @@
 #include <SDL2/SDL_mixer.h>
 #include <GL/glew.h>
 #include <memory>
+#include "Config.h"
 #include <vector>
 #include <string>
 #include <unordered_map>
@@ -53,6 +54,7 @@
 #include <atomic>
 #include <mutex>
 #include <condition_variable>
+#include <queue>
 
 namespace fs = std::filesystem;
 

@@ -15,7 +15,7 @@
 #include "../include/Scene/SceneManager.h"
 #include "../include/core/AssetManager.h"
 #include "../include/core/PhysicsEngine.h"
-#include "../include/AudioEngine.h"
+#include "../include/Core/AudioEngine.h"
 #include "../include/NetworkManager.h"
 #include "../include/core/EventSystem.h"
 #include "../include/Tools/DebugDraw.h"
@@ -30,6 +30,8 @@
 #include "../include/Serialization/PrefabSystem.h"
 #include "../include/ModdingSystem.h"
 
+#define SOL_ALL_SAFETIES_ON 1
+#define SOL_LUA_VERSION_I_ 504  // Define Lua 5.4
 #include <sol/sol.hpp>
 #include <lua.hpp>
 #include <filesystem>
