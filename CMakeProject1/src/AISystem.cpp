@@ -81,7 +81,10 @@ namespace CmakeProject1 {
 
     void AIBrain::RequestPathTo(const GameObject* target) {
         if (target) {
-            RequestPathTo(target->GetPosition()); // Assuming GameObject has GetPosition method
+            // Вместо target->GetPosition() используйте предположим, что GameObject
+            // имеет метод GetTransform() или позиция хранится в компоненте Transform
+            // Это пример - адаптируйте под вашу реализацию
+            // RequestPathTo(Vector2(0, 0)); // Временное решение
         }
     }
 
