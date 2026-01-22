@@ -1,49 +1,35 @@
 ```
 # Build artifacts
-*.o
-*.obj
-*.exe
-*.dll
-*.so
-*.a
-*.out
-build/
-dist/
-target/
+CMakeProject1/build/
+CMakeProject1/dist/
+CMakeProject1/*.o
+CMakeProject1/*.obj
+CMakeProject1/*.a
+CMakeProject1/*.lib
+CMakeProject1/*.so
+CMakeProject1/*.dll
+CMakeProject1/*.exe
 
 # Dependencies
-node_modules/
-venv/
-.venv/
-__pycache__/
-.mypy_cache/
-.pytest_cache/
-.coverage
-coverage/
-htmlcov/
+CMakeProject1/external/
+CMakeProject1/lib/
 
-# CMake specific
-CMakeFiles/
-cmake-build-*/
-Makefile
-*.cmake
-
-# Editors
-.vscode/
-.idea/
-*.swp
-*.swo
+# Temp files
 *.tmp
+*.swp
+*~
 
 # Logs
 *.log
 
+# IDE files
+.vscode/
+.idea/
+*.userprefs
+*.user
+
 # Environment
 .env
 .env.local
-*.env.*
-
-# System
-.DS_Store
-Thumbs.db
+.env.*
 ```

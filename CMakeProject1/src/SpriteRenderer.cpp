@@ -35,7 +35,7 @@ namespace CmakeProject1 {
             return;
         }
 
-        texture = SDL_CreateTextureFromSurface(engineRenderer, loadedSurface);
+        texture = SDL_CreateTextureFromSurface(engineRenderer->getSDLRenderer(), loadedSurface);
         if (!texture) {
             std::cerr << "Unable to create texture from " << filepath << "! SDL Error: " << SDL_GetError() << std::endl;
         }
