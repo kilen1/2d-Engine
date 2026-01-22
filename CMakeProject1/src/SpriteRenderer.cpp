@@ -28,14 +28,17 @@ namespace CmakeProject1 {
         }
 
         // Create texture from surface
-        auto engineRenderer = Engine::getInstance().getRenderer();
+        auto engine = &Engine::getInstance();
+        auto engineRenderer = engine->getRenderer();
         if (!engineRenderer) {
             std::cerr << "Engine renderer not available!" << std::endl;
             SDL_FreeSurface(loadedSurface);
             return;
         }
 
-        texture = SDL_CreateTextureFromSurface(engineRenderer->getSDLRenderer(), loadedSurface);
+        // Get the SDL_Renderer from the engine's renderer wrapper
+        SDL_Renderer* sdlRenderer = engineRenderer->getSDLRenderer();
+        texture = SDL_CreateTextureFromSurface(sdlRenderer, loadedSurface);
         if (!texture) {
             std::cerr << "Unable to create texture from " << filepath << "! SDL Error: " << SDL_GetError() << std::endl;
         }

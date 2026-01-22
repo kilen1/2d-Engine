@@ -49,9 +49,7 @@
 #include <imgui_internal.h>
 #include <nfd.h>
 #define SOL_ALL_SAFETIES_ON 1
-#define SOL_LUA_VERSION_I_ 504  // Define Lua 5.4
 #include <sol/sol.hpp>
-#include <lua.hpp>
 #include <json/json.h>
 #include <stb_image.h>
 #include <stb_image_write.h>
