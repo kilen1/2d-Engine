@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Component.h"
+#include "Collider2D.h"
 #include "../Core/Types.h"
 
 namespace CmakeProject1 {
