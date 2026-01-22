@@ -1,7 +1,7 @@
-#include "../include/SpriteRenderer.h"
-#include "../include/Transform.h"
-#include "../include/Engine.h"
-#include "../include/GameObject.h"
+#include "SpriteRenderer.h"
+#include "Transform.h"
+#include "Engine.h"
+#include "GameObject.h"
 #include <iostream>
 
 namespace CmakeProject1 {

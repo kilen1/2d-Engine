@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SDL2/SDL.h>
+#include <GL/glew.h>  // For OpenGL types like GLuint
 #include <vector>
 #include <string>
 #include <functional>

@@ -1,4 +1,4 @@
-#include "../include/GraphicsTablet.h"
+#include "GraphicsTablet.h"
 #include <iostream>
 
 namespace CmakeProject1 {

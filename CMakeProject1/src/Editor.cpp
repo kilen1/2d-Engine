@@ -1,5 +1,5 @@
-#include "../include/Editor.h"
-#include "../include/Engine.h"
+#include "Editor.h"
+#include "Engine.h"
 #include <iostream>
 #include <GL/glew.h>
 #include <GL/gl.h>
