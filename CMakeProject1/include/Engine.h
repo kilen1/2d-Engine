@@ -31,7 +31,7 @@
 #include "../Tools/Inspector.h"
 #include "../Tools/Hierarchy.h"
 #include "../Tools/ToolManager.h"
-#include "../Tools/GraphicsTablet.h"
+#include "../GraphicsTablet.h"
 #include "../Scripting/ScriptManager.h"
 #include "../Scripting/HotReload.h"
 #include "../Networking/NetworkManager.h"

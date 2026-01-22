@@ -4,8 +4,17 @@
 #include <vector>
 #include <string>
 #include <functional>
+#include "Core/Types.h"
 
 namespace CmakeProject1 {
+
+    enum class BlendMode {
+        Normal,
+        Additive,
+        Multiply,
+        Screen,
+        Overlay
+    };
 
     class GraphicsTablet {
     public:

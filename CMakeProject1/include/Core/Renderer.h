@@ -4,14 +4,9 @@
 #include <string>
 #include <unordered_map>
 #include <memory>
+#include "Types.h"
 
 namespace CmakeProject1 {
-
-    struct Color {
-        Uint8 r, g, b, a;
-        Color(Uint8 r = 255, Uint8 g = 255, Uint8 b = 255, Uint8 a = 255) 
-            : r(r), g(g), b(b), a(a) {}
-    };
 
     class Texture {
     public:
