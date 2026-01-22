@@ -601,7 +601,7 @@ namespace CmakeProject1 {
         };
         
         table["size"] = [](const sol::table& t) {
-            return t.size();
+            return static_cast<int>(t.size());
         };
         
         table["isempty"] = [](const sol::table& t) {
