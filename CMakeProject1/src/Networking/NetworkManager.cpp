@@ -1,4 +1,4 @@
-#include "../../include/Networking/NetworkManager.h"
+#include "NetworkManager.h"
 
 namespace CmakeProject1 {
 

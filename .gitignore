@@ -3,10 +3,9 @@
 build/
 cmake-build-*/
 Makefile
+CMakeCache.txt
 *.o
-*.obj
 *.a
-*.lib
 *.so
 *.dylib
 *.dll
@@ -28,20 +27,9 @@ vendor/
 .idea/
 *.swp
 *.swo
+*.tmp
 
 # OS
 .DS_Store
 Thumbs.db
-
-# Coverage
-coverage/
-htmlcov/
-.coverage
-
-# CMake specific
-CMakeFiles/
-CMakeCache.txt
-cmake_install.cmake
-install_manifest.txt
-*.cmake
 ```

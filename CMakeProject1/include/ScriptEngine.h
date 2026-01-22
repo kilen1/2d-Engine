@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Math/Vector2.h"
+#include "../Core/Types.h"
 #include "../Math/Rect.h"
 #include "../Math/Circle.h"
 #include "../Math/Polygon.h"

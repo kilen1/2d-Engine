@@ -1,4 +1,4 @@
-#include "../../include/Serialization/PrefabSystem.h"
+#include "PrefabSystem.h"
 #include <iostream>
 
 namespace CmakeProject1 {
