@@ -105,7 +105,7 @@ namespace CmakeProject1 {
                                                                  std::function<void(GameObject*)> callback) {
         std::vector<GameObject*> instances;
         for (const auto& pos : positions) {
-            GameObject* instance = Instantiate(prefabName, pos);
+            GameObject* instance = Instantiate(prefabName, Vector2(pos.x, pos.y));
             if (instance && callback) {
                 callback(instance);
             }

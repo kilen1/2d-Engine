@@ -19,6 +19,79 @@ class TextEditor;
 #include <filesystem>
 #include <any>
 
+// Include core types
+#include "Core/Types.h"
+#include "Editor/EditorTypes.h"
+#include "Editor/EditorClasses.h"
+
+// Forward declarations for needed types
+namespace CmakeProject1 {
+    class GameObject;
+    struct Vector2;
+    struct Vector3;
+    struct Color;
+    
+    // Forward declare enum classes
+    enum class ShaderType;
+    enum class MaterialProperty;
+    enum class TextureOperation;
+    enum class TextureType;
+    enum class SpriteEditOperation;
+    enum class AnimationProperty;
+    enum class ParticleProperty;
+    enum class TerrainTool;
+    enum class TerrainGeneratorType;
+    enum class WaterProperty;
+    enum class LightType;
+    enum class LightProperty;
+    enum class PostProcessingEffect;
+    enum class PhysicsMaterialProperty;
+    enum class NavMeshEditOperation;
+    enum class UIElementType;
+    enum class UIProperty;
+    enum class UILayoutType;
+    enum class ScriptLanguage;
+    enum class MessageType;
+    enum class FileDialogMode;
+    enum class ExportFormat;
+    
+    // Forward declare other editor classes
+    class EditorTool;
+    enum class EditorState;
+    class NodeGraph;
+    class ShaderEditor;
+    class MaterialEditor;
+    class TextureEditor;
+    class SpriteEditor;
+    class AnimationEditor;
+    class ParticleEditor;
+    class TerrainEditor;
+    class WaterEditor;
+    class LightEditor;
+    class PostProcessingEditor;
+    class PhysicsEditor;
+    class NavigationEditor;
+    class UIEditor;
+    class ScriptEditor;
+    class BuildSettings;
+    struct PackageInfo;
+    class VersionControl;
+    class Profiler;
+    class NetworkEditor;
+    struct EditorSettings;
+    struct Macro;
+    class Plugin;
+    struct Tutorial;
+    struct Message;
+    class Dialog;
+    class PreviewWindow;
+    class QuickSearch;
+    struct ProjectHistory;
+    struct Backup;
+    struct EditorStatistics;
+    struct DebugInfo;
+}
+
 namespace fs = std::filesystem;
 
 namespace CmakeProject1 {
@@ -38,11 +111,11 @@ namespace CmakeProject1 {
         void processEvent(const SDL_Event& event);
         
         // Состояние
-        void setActive(bool active) { isActive = active; }
-        bool isActive() const { return isActive; }
+        void setActive(bool active) { m_isActive = active; }
+        bool isActive() const { return m_isActive; }
         
-        void setPlayMode(bool play) { isPlayMode = play; }
-        bool isPlayMode() const { return isPlayMode; }
+        void setPlayMode(bool play) { m_isPlayMode = play; }
+        bool isPlayMode() const { return m_isPlayMode; }
         
         // Окна редактора
         void showSceneHierarchy(bool show = true);
@@ -399,8 +472,8 @@ namespace CmakeProject1 {
         
     private:
         // Состояние
-        bool isActive = true;
-        bool isPlayMode = false;
+        bool m_isActive = true;
+        bool m_isPlayMode = false;
         bool isPaused = false;
         
         // Окна
