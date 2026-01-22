@@ -1,18 +1,39 @@
 ```
 # Build artifacts
-build/
-cmake-build-*/
-Makefile
-CMakeCache.txt
 *.o
-*.a
-*.so
-*.dylib
-*.dll
+*.obj
 *.exe
+*.dll
+*.so
+*.a
+*.out
+build/
+dist/
+target/
 
 # Dependencies
-vendor/
+node_modules/
+venv/
+.venv/
+__pycache__/
+.mypy_cache/
+.pytest_cache/
+.coverage
+coverage/
+htmlcov/
+
+# CMake specific
+CMakeFiles/
+cmake-build-*/
+Makefile
+*.cmake
+
+# Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*.tmp
 
 # Logs
 *.log
@@ -22,14 +43,7 @@ vendor/
 .env.local
 *.env.*
 
-# Editors
-.vscode/
-.idea/
-*.swp
-*.swo
-*.tmp
-
-# OS
+# System
 .DS_Store
 Thumbs.db
 ```
