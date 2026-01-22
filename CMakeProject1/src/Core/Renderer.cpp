@@ -69,7 +69,10 @@ namespace CmakeProject1 {
     }
 
     void Renderer::setDrawColor(const Color& color) {
-        setDrawColor(color.r, color.g, color.b, color.a);
+        setDrawColor(static_cast<Uint8>(color.r * 255.0f),
+                     static_cast<Uint8>(color.g * 255.0f),
+                     static_cast<Uint8>(color.b * 255.0f),
+                     static_cast<Uint8>(color.a * 255.0f));
     }
 
     void Renderer::drawPoint(int x, int y) {
