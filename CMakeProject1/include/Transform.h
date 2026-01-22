@@ -2,28 +2,9 @@
 
 #include <SDL2/SDL.h>
 #include <memory>
+#include "Core/Types.h"
 
 namespace CmakeProject1 {
-
-    struct Vector2 {
-        float x = 0.0f;
-        float y = 0.0f;
-
-        Vector2() = default;
-        Vector2(float x, float y) : x(x), y(y) {}
-
-        Vector2 operator+(const Vector2& other) const {
-            return Vector2(x + other.x, y + other.y);
-        }
-
-        Vector2 operator-(const Vector2& other) const {
-            return Vector2(x - other.x, y - other.y);
-        }
-
-        Vector2 operator*(float scalar) const {
-            return Vector2(x * scalar, y * scalar);
-        }
-    };
 
     class Transform {
     public:
