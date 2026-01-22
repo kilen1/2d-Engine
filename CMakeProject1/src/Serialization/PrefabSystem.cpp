@@ -27,7 +27,7 @@ namespace CmakeProject1 {
     }
 
     GameObject* PrefabSystem::Instantiate(const std::string& prefabName) {
-        return Instantiate(prefabName, {0, 0});
+        return Instantiate(prefabName, Vector2(0, 0));
     }
 
     GameObject* PrefabSystem::Instantiate(const std::string& prefabName, const Vector2& position) {

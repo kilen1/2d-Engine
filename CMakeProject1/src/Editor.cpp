@@ -6,7 +6,15 @@
 #include <memory>
 #include <filesystem>
 
-namespace fs = std::filesystem;
+// Prevent redefinition of ImVec2 and other imgui types
+#ifndef IMGUI_DEFINE_MATH_OPERATORS
+#define IMGUI_DEFINE_MATH_OPERATORS
+#endif
+#include "imgui.h"
+#include "imgui_internal.h"
+#include "backends/imgui_impl_sdl2.h"
+#include "backends/imgui_impl_opengl3.h"
+
 
 namespace CmakeProject1 {
 

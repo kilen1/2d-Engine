@@ -87,7 +87,7 @@ namespace CmakeProject1 {
         // Слои рисования
         struct Layer {
             std::string name;
-            GLuint texture = 0;
+            GLuint textureId = 0;  // Renamed from 'texture' to avoid potential conflicts
             float opacity = 1.0f;
             bool visible = true;
             BlendMode blendMode = BlendMode::Normal;

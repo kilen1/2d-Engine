@@ -1,4 +1,5 @@
 #include "../include/Rigidbody2D.h"
+#include "../include/Collider2D.h"
 #include <iostream>
 
 namespace CmakeProject1 {

@@ -1,12 +1,15 @@
 #pragma once
 
-#include "imgui.h"
-#include "imgui_internal.h"
-#include "ImGuizmo.h"
-#include "imnodes.h"
-#include "ImSequencer.h"
-#include "ImCurveEdit.h"
-#include "TextEditor.h"
+// Forward declarations for imgui types
+struct ImVec2;
+struct ImVec4;
+namespace ImGui { }
+namespace ImGuizmo { }
+namespace imnodes { }
+namespace ImSequencer { }
+namespace ImCurveEdit { }
+class TextEditor;
+
 #include <SDL2/SDL.h>
 #include <memory>
 #include <vector>
@@ -14,6 +17,7 @@
 #include <unordered_map>
 #include <functional>
 #include <filesystem>
+#include <any>
 
 namespace fs = std::filesystem;
 
