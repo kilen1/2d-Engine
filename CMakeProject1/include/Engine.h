@@ -1,50 +1,9 @@
 #pragma once
 
-#include "Core/System.h"
-#include "Core/Window.h"
-#include "Core/Renderer.h"
-#include "Core/InputManager.h"
-#include "Core/AssetManager.h"
-#include "Core/TimeManager.h"
-#include "Core/EventSystem.h"
-#include "Core/PhysicsEngine.h"
-#include "Core/AudioEngine.h"
-#include "Core/ScriptEngine.h"
-#include "Scene/SceneManager.h"
-#include "Editor/Editor.h"
-#include "Project/ProjectManager.h"
-#include "Graphics/Camera.h"
-#include "Graphics/SpriteBatch.h"
-#include "Graphics/ParticleSystem.h"
-#include "Graphics/LightSystem.h"
-#include "UI/Canvas.h"
-#include "UI/UIManager.h"
-#include "Animation/AnimationSystem.h"
-#include "AI/BehaviorTree.h"
-#include "AI/Pathfinding.h"
-#include "Tools/ContentBrowser.h"
-#include "Tools/Console.h"
-#include "Tools/Profiler.h"
-#include "Tools/DebugDraw.h"
-#include "Tools/SceneViewer.h"
-#include "Tools/GameView.h"
-#include "Tools/Inspector.h"
-#include "Tools/Hierarchy.h"
-#include "Tools/ToolManager.h"
-#include "GraphicsTablet.h"
-#include "Scripting/ScriptManager.h"
-#include "Scripting/HotReload.h"
-#include "Networking/NetworkManager.h"
-#include "Serialization/Serializer.h"
-#include "Serialization/PrefabSystem.h"
-
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
-#include <SDL2/SDL_ttf.h>
-#include <SDL2/SDL_mixer.h>
-#include <GL/glew.h>
-#include <memory>
+#include "Types.h"
 #include "Config.h"
+#include <SDL2/SDL.h>
+#include <memory>
 #include <vector>
 #include <string>
 #include <unordered_map>
@@ -53,12 +12,45 @@
 #include <thread>
 #include <atomic>
 #include <mutex>
-#include <condition_variable>
 #include <queue>
+#include <condition_variable>
 
-namespace fs = std::filesystem;
+// Forward declarations
+struct SDL_Window;
+struct SDL_GLContext;
 
 namespace CmakeProject1 {
+
+    // System forward declarations
+    class Window;
+    class Renderer;
+    class InputManager;
+    class AssetManager;
+    class SceneManager;
+    class ProjectManager;
+    class ScriptEngine;
+    class PhysicsEngine;
+    class AudioEngine;
+    class EventSystem;
+    class TimeManager;
+    class Editor;
+    class Camera;
+    class SpriteBatch;
+    class ParticleSystem;
+    class LightSystem;
+    class UIManager;
+    class AnimationSystem;
+    class NetworkManager;
+    class GraphicsTablet;
+    class ToolManager;
+    class ContentBrowser;
+    class Console;
+    class Profiler;
+    class Hierarchy;
+    class Inspector;
+    class SceneViewer;
+    class GameView;
+    class DebugDraw;
 
     class Engine {
     public:
@@ -66,149 +58,99 @@ namespace CmakeProject1 {
         Engine(const Engine&) = delete;
         Engine& operator=(const Engine&) = delete;
 
-        // Инициализация и запуск
+        // Core
         bool initialize(int argc = 0, char* argv[] = nullptr);
         void run();
         void shutdown();
-        
-        // Системы
-        void preUpdate();
-        void update();
-        void postUpdate();
-        void render();
-        
-        // Проекты
-        bool createProject(const std::string& name, const fs::path& location);
-        bool loadProject(const fs::path& projectPath);
+
+        // Project management
+        bool createProject(const std::string& name, const std::string& path);
+        bool openProject(const std::string& projectPath);
         bool saveProject();
         void closeProject();
-        
-        // Сцены
-        void loadScene(const std::string& scenePath);
-        void saveCurrentScene();
-        void createNewScene(const std::string& name);
-        
-        // Системные геттеры
-        Window* getWindow() const { return window.get(); }
-        Renderer* getRenderer() const { return renderer.get(); }
-        InputManager* getInput() const { return inputManager.get(); }
-        AssetManager* getAssets() const { return assetManager.get(); }
-        SceneManager* getSceneManager() const { return sceneManager.get(); }
-        Editor* getEditor() const { return editor.get(); }
-        ProjectManager* getProjectManager() const { return projectManager.get(); }
-        ScriptEngine* getScriptEngine() const { return scriptEngine.get(); }
-        PhysicsEngine* getPhysics() const { return physicsEngine.get(); }
-        
-        // Состояние
-        bool isRunning() const { return running; }
-        bool isEditorMode() const { return editorMode; }
-        void setEditorMode(bool mode);
+        bool isProjectLoaded() const;
+        std::string getProjectPath() const;
+        std::string getProjectName() const;
+
+        // Scene management
+        std::shared_ptr<Scene> createScene(const std::string& name);
+        bool loadScene(const std::string& scenePath);
+        bool saveScene(const std::string& scenePath = "");
+        std::shared_ptr<Scene> getCurrentScene() const;
+
+        // Asset management
+        std::shared_ptr<Texture> loadTexture(const std::string& path);
+        std::shared_ptr<Sprite> createSprite(const std::string& name, std::shared_ptr<Texture> texture, const Rect& rect);
+        std::shared_ptr<Material> createMaterial(const std::string& name);
+        std::shared_ptr<Shader> loadShader(const std::string& vertexPath, const std::string& fragmentPath);
+        std::shared_ptr<AudioClip> loadAudio(const std::string& path);
+        std::shared_ptr<Font> loadFont(const std::string& path, int size);
+        std::shared_ptr<AnimationClip> createAnimation(const std::string& name);
+
+        // Game object management
+        std::shared_ptr<GameObject> createGameObject(const std::string& name = "GameObject");
+        std::shared_ptr<GameObject> instantiate(std::shared_ptr<GameObject> prefab);
+        void destroy(std::shared_ptr<GameObject> gameObject);
+
+        // Editor
+        void toggleEditor();
+        bool isEditorEnabled() const { return m_editorEnabled; }
+        void setEditorEnabled(bool enabled);
+
+        // Play mode
         void togglePlayMode();
-        
-        // Конфигурация
-        void loadConfig(const std::string& configPath);
-        void saveConfig(const std::string& configPath);
-        
-        // Утилиты
-        void takeScreenshot(const std::string& path = "");
-        void recordVideo(const std::string& path, int fps = 60);
-        void stopRecording();
-        
-        // Мультиплеер
-        void startServer(int port = 7777);
-        void connectToServer(const std::string& address, int port = 7777);
-        void disconnect();
-        
-        // Скрипты
-        void reloadScripts();
-        void compileScript(const std::string& scriptPath);
-        
-        // Редактор спрайтов
-        void startSpriteEditor();
-        void importSpritesheet(const std::string& path, int frameWidth, int frameHeight);
-        
-        // Анимации
-        void createAnimation(const std::string& name, const std::vector<std::string>& frames);
-        void playAnimation(const std::string& gameObject, const std::string& animation);
-        
-        // Частицы
-        void emitParticles(const std::string& systemName, const Vector2& position, int count = 100);
-        void stopParticles(const std::string& systemName);
-        
-        // Освещение
-        void addLight(const Vector2& position, float radius, const Color& color);
-        void removeLight(const std::string& lightId);
-        
-        // Звук
-        void playSound(const std::string& soundPath, bool loop = false);
-        void stopAllSounds();
-        void setMasterVolume(float volume);
-        
-        // UI
-        void createUIElement(const std::string& type, const std::string& name, const Vector2& position);
-        void showMessageBox(const std::string& title, const std::string& message);
-        
-        // Дебаг
-        void drawDebugLine(const Vector2& start, const Vector2& end, const Color& color);
-        void drawDebugCircle(const Vector2& center, float radius, const Color& color);
-        void drawDebugRect(const SDL_Rect& rect, const Color& color);
-        
-        // ГП планшет
-        void enableTabletSupport(bool enable);
-        bool isTabletConnected() const;
+        bool isPlaying() const { return m_playing; }
+        void pause();
+        void resume();
+        void stop();
+
+        // Graphics tablet
+        void setTabletEnabled(bool enabled);
+        bool isTabletEnabled() const;
         Vector2 getTabletPosition() const;
         float getTabletPressure() const;
-        
-        // Горячие клавиши
-        void registerHotkey(const std::string& name, SDL_Keycode key, std::function<void()> action);
-        void unregisterHotkey(const std::string& name);
-        
-        // События
+
+        // Drawing tools
+        void setBrushColor(const Color& color);
+        void setBrushSize(float size);
+        void setBrushTexture(std::shared_ptr<Texture> texture);
+        void clearDrawing();
+        void saveDrawing(const std::string& path);
+
+        // System getters
+        Window* getWindow() const { return m_window.get(); }
+        Renderer* getRenderer() const { return m_renderer.get(); }
+        InputManager* getInput() const { return m_inputManager.get(); }
+        AssetManager* getAssetManager() const { return m_assetManager.get(); }
+        SceneManager* getSceneManager() const { return m_sceneManager.get(); }
+        Editor* getEditor() const { return m_editor.get(); }
+        ProjectManager* getProjectManager() const { return m_projectManager.get(); }
+        ScriptEngine* getScriptEngine() const { return m_scriptEngine.get(); }
+        PhysicsEngine* getPhysicsEngine() const { return m_physicsEngine.get(); }
+        AudioEngine* getAudioEngine() const { return m_audioEngine.get(); }
+        GraphicsTablet* getGraphicsTablet() const { return m_graphicsTablet.get(); }
+
+        // Config
+        EngineConfig& getConfig() { return m_config; }
+        const EngineConfig& getConfig() const { return m_config; }
+        void loadConfig(const std::string& path = "config.json");
+        void saveConfig(const std::string& path = "config.json");
+
+        // Events
         void subscribe(const std::string& eventType, std::function<void(const Event&)> callback);
         void unsubscribe(const std::string& eventType, size_t id);
-        void emit(const std::string& eventType, const EventData& data = {});
-        
-        // Сохранение/загрузка
-        void saveGame(const std::string& slot);
-        void loadGame(const std::string& slot);
-        
-        // Консольные команды
-        void executeConsoleCommand(const std::string& command);
-        void registerCommand(const std::string& command, std::function<void(const std::vector<std::string>&)> handler);
-        
-        // Профилирование
-        void startProfiling(const std::string& sessionName);
-        void stopProfiling();
-        void saveProfileData(const std::string& path);
-        
-        // Мультипоточность
+        void emit(const std::string& eventType, const Event& event);
+
+        // Multithreading
         void submitTask(std::function<void()> task);
         void waitForTasks();
-        
-        // Плагины
-        void loadPlugin(const std::string& pluginPath);
-        void unloadPlugin(const std::string& pluginName);
-        std::vector<std::string> getLoadedPlugins() const;
-        
-        // Расширенные возможности
-        void enableVR(bool enable);
-        void enableAR(bool enable);
-        void enableRayTracing(bool enable);
-        
-        // Настройки качества
-        void setGraphicsQuality(QualityLevel level);
-        void enableAntiAliasing(bool enable);
-        void enableVSync(bool enable);
-        void setTargetFPS(int fps);
-        
-        // Локализация
-        void loadLocalization(const std::string& language);
-        std::string translate(const std::string& key);
-        
-        // Доступные сцены
-        std::vector<std::string> getAvailableScenes() const;
-        
-        // Статистика
+
+        // Debug
+        void drawDebugLine(const Vector2& start, const Vector2& end, const Color& color);
+        void drawDebugCircle(const Vector2& center, float radius, const Color& color);
+        void drawDebugRect(const Rect& rect, const Color& color);
+
+        // Statistics
         struct Statistics {
             float fps;
             float frameTime;
@@ -219,155 +161,106 @@ namespace CmakeProject1 {
             int components;
             int scripts;
         };
-        
+
         Statistics getStatistics() const;
-        
-        // Версия движка
+
+        // Version
         static const char* getVersion();
         static const char* getBuildDate();
         static const char* getPlatform();
-        
+
     private:
         Engine();
         ~Engine();
-        
-        // Основные системы
-        std::unique_ptr<Window> window;
-        std::unique_ptr<Renderer> renderer;
-        std::unique_ptr<InputManager> inputManager;
-        std::unique_ptr<AssetManager> assetManager;
-        std::unique_ptr<TimeManager> timeManager;
-        std::unique_ptr<EventSystem> eventSystem;
-        std::unique_ptr<PhysicsEngine> physicsEngine;
-        std::unique_ptr<AudioEngine> audioEngine;
-        std::unique_ptr<ScriptEngine> scriptEngine;
-        std::unique_ptr<SceneManager> sceneManager;
-        std::unique_ptr<Editor> editor;
-        std::unique_ptr<ProjectManager> projectManager;
-        std::unique_ptr<NetworkManager> networkManager;
-        std::unique_ptr<GraphicsTablet> graphicsTablet;
-        std::unique_ptr<ToolManager> toolManager;
-        std::unique_ptr<ScriptManager> scriptManager;
-        std::unique_ptr<HotReload> hotReload;
-        
-        // Графические системы
-        std::unique_ptr<SpriteBatch> spriteBatch;
-        std::unique_ptr<ParticleSystem> particleSystem;
-        std::unique_ptr<LightSystem> lightSystem;
-        std::unique_ptr<Camera> mainCamera;
-        
-        // UI системы
-        std::unique_ptr<UIManager> uiManager;
-        std::unique_ptr<Canvas> mainCanvas;
-        
-        // Анимации
-        std::unique_ptr<AnimationSystem> animationSystem;
-        
-        // AI
-        std::unique_ptr<BehaviorTreeManager> behaviorTreeManager;
-        std::unique_ptr<Pathfinding> pathfinding;
-        
-        // Инструменты
-        std::unique_ptr<ContentBrowser> contentBrowser;
-        std::unique_ptr<Console> console;
-        std::unique_ptr<Profiler> profiler;
-        std::unique_ptr<DebugDraw> debugDraw;
-        std::unique_ptr<SceneViewer> sceneViewer;
-        std::unique_ptr<GameView> gameView;
-        std::unique_ptr<Inspector> inspector;
-        std::unique_ptr<Hierarchy> hierarchy;
-        
-        // Сериализация
-        std::unique_ptr<Serializer> serializer;
-        std::unique_ptr<PrefabSystem> prefabSystem;
-        
-        // Пул потоков
-        std::vector<std::thread> workerThreads;
-        std::queue<std::function<void()>> taskQueue;
-        std::mutex taskMutex;
-        std::condition_variable taskCondition;
-        std::atomic<bool> workersRunning{false};
-        
-        // Состояние
-        std::atomic<bool> running{false};
-        std::atomic<bool> editorMode{true};
-        std::atomic<bool> playMode{false};
-        std::atomic<bool> paused{false};
-        std::atomic<bool> recording{false};
-        
-        // Конфигурация
-        Config config;
-        
-        // Статистика
-        Statistics stats;
-        std::chrono::high_resolution_clock::time_point lastStatUpdate;
-        
-        // Инициализация систем
+
+        // Core systems
+        std::unique_ptr<Window> m_window;
+        std::unique_ptr<Renderer> m_renderer;
+        std::unique_ptr<InputManager> m_inputManager;
+        std::unique_ptr<AssetManager> m_assetManager;
+        std::unique_ptr<SceneManager> m_sceneManager;
+        std::unique_ptr<ProjectManager> m_projectManager;
+        std::unique_ptr<ScriptEngine> m_scriptEngine;
+        std::unique_ptr<PhysicsEngine> m_physicsEngine;
+        std::unique_ptr<AudioEngine> m_audioEngine;
+        std::unique_ptr<EventSystem> m_eventSystem;
+        std::unique_ptr<TimeManager> m_timeManager;
+        std::unique_ptr<Editor> m_editor;
+        std::unique_ptr<NetworkManager> m_networkManager;
+        std::unique_ptr<GraphicsTablet> m_graphicsTablet;
+        std::unique_ptr<ToolManager> m_toolManager;
+
+        // Graphics systems
+        std::unique_ptr<Camera> m_mainCamera;
+        std::unique_ptr<SpriteBatch> m_spriteBatch;
+        std::unique_ptr<ParticleSystem> m_particleSystem;
+        std::unique_ptr<LightSystem> m_lightSystem;
+        std::unique_ptr<UIManager> m_uiManager;
+        std::unique_ptr<AnimationSystem> m_animationSystem;
+
+        // Tools
+        std::unique_ptr<ContentBrowser> m_contentBrowser;
+        std::unique_ptr<Console> m_console;
+        std::unique_ptr<Profiler> m_profiler;
+        std::unique_ptr<Hierarchy> m_hierarchy;
+        std::unique_ptr<Inspector> m_inspector;
+        std::unique_ptr<SceneViewer> m_sceneViewer;
+        std::unique_ptr<GameView> m_gameView;
+        std::unique_ptr<DebugDraw> m_debugDraw;
+
+        // Thread pool
+        std::vector<std::thread> m_workerThreads;
+        std::queue<std::function<void()>> m_taskQueue;
+        std::mutex m_taskMutex;
+        std::condition_variable m_taskCondition;
+        std::atomic<bool> m_workersRunning{ false };
+
+        // State
+        std::atomic<bool> m_running{ false };
+        std::atomic<bool> m_editorEnabled{ true };
+        std::atomic<bool> m_playing{ false };
+        std::atomic<bool> m_paused{ false };
+
+        // Config
+        EngineConfig m_config;
+
+        // Statistics
+        Statistics m_stats;
+
+        // Initialization
         bool initializeSDL();
         bool initializeOpenGL();
         bool initializeImGui();
         bool initializeSystems();
         bool initializeTools();
         bool initializeScripting();
-        bool initializeNetworking();
-        
-        // Основной цикл
+
+        // Main loop
         void mainLoop();
         void processEvents();
-        void updateSystems();
-        void renderSystems();
+        void update(float deltaTime);
+        void render();
         void renderEditor();
-        
-        // Обработка оконных событий
+
+        // Event handlers
         void handleWindowEvent(const SDL_Event& event);
         void handleResize(int width, int height);
         void handleDropFile(const std::string& filePath);
-        
-        // Управление сценами
-        void unloadCurrentScene();
-        void reloadCurrentScene();
-        
-        // Управление памятью
-        void garbageCollect();
-        void defragmentMemory();
-        
-        // Утилиты
+        void handleHotkey(SDL_Keycode key);
+
+        // Project management
+        void createDefaultProjectStructure(const std::filesystem::path& projectPath);
+        std::string generateProjectFile(const std::string& name) const;
+
+        // Utility
         void updateStatistics();
-        void checkForUpdates();
         void backupProject();
-        
-        // Обработчики ошибок
-        void handleError(const std::string& error);
-        void logError(const std::string& error);
-        
-        // Шейдеры
-        std::unordered_map<std::string, GLuint> shaders;
-        bool loadShader(const std::string& name, const std::string& vertexPath, const std::string& fragmentPath);
-        void useShader(const std::string& name);
-        
-        // Ресурсы
-        std::unordered_map<std::string, std::shared_ptr<Resource>> resources;
-        
-        // Регистрация компонентов
-        void registerBuiltinComponents();
-        
-        // Команды консоли
-        std::unordered_map<std::string, std::function<void(const std::vector<std::string>&)>> consoleCommands;
-        
-        // Горячие клавиши
-        std::unordered_map<std::string, std::pair<SDL_Keycode, std::function<void()>>> hotkeys;
-        
-        // События
-        std::unordered_map<std::string, std::vector<std::pair<size_t, std::function<void(const Event&)>>>> eventListeners;
-        size_t nextListenerId = 0;
-        
-        // Версия
-        static const char* VERSION;
-        static const char* BUILD_DATE;
-        
-        // Дружественные классы
+        void autoSave();
+        void checkForUpdates();
+
+        // Friend classes
         friend class Editor;
         friend class ScriptEngine;
-        friend class ResourceManager;
     };
-}
+
+} // namespace CmakeProject1
