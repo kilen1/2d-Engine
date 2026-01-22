@@ -2,6 +2,7 @@
 
 #include "GameObject.h"
 #include "../Core/Types.h"
+#include "AI/BehaviorTree.h"
 #include <vector>
 #include <unordered_map>
 #include <memory>
@@ -11,8 +12,6 @@ namespace CmakeProject1 {
 
     // Forward declarations
     class AIBrain;
-    class BehaviorTree;
-    class PathfindingNode;
 
     // Enums for AI types
     enum class AIBehaviorType {
