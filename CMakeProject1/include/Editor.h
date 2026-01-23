@@ -268,6 +268,8 @@ namespace CmakeProject1 {
         bool m_showVersionControl = false;
         bool m_showProfiler = false;
         bool m_showMemoryProfiler = false;
+        bool m_showGizmos = true;
+        bool m_showStats = false;
 
         // Selection
         std::weak_ptr<GameObject> m_selectedGameObject;
