@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Creative Studio - Дизайн, Веб-разработка, SEO</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+</head>
+<body>
+    <!-- Шапка сайта -->
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <h2><i class="fas fa-palette"></i> Creative Studio</h2>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#home" class="active">Главная</a></li>
+                <li><a href="#services">Услуги</a></li>
+                <li><a href="#portfolio">Портфолио</a></li>
+                <li><a href="#pricing">Цены</a></li>
+                <li><a href="#contact">Контакты</a></li>
+                <li id="account-link"><a href="#account" onclick="showAccount()">Войти</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Главный раздел -->
+    <section id="home" class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Профессиональные услуги дизайна и веб-разработки</h1>
+                <p>Создаем современные веб-сайты, занимаемся дизайном и SEO продвижением для бизнеса любого масштаба</p>
+                <div class="hero-buttons">
+                    <button class="cta-btn primary-btn" onclick="scrollToSection('pricing')">Выбрать тариф</button>
+                    <button class="cta-btn secondary-btn" onclick="showAccount()">Личный кабинет</button>
+                </div>
+            </div>
+            <div class="hero-image">
+                <img src="images/hero.svg" alt="Веб-разработка" onerror="this.src='https://via.placeholder.com/600x400?text=Creative+Studio'">
+            </div>
+        </div>
+    </section>
+
+    <!-- Услуги -->
+    <section id="services" class="services">
+        <div class="container">
+            <h2 class="section-title">Наши услуги</h2>
+            <p class="section-subtitle">Мы предлагаем полный спектр услуг для вашего онлайн-присутствия</p>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-paint-brush"></i>
+                    </div>
+                    <h3>UI/UX Дизайн</h3>
+                    <p>Создание уникального дизайна для сайтов, логотипов, брендирования и мобильных приложений</p>
+                    <ul class="service-features">
+                        <li>Исследование аудитории</li>
+                        <li>Прототипирование</li>
+                        <li>Визуальный дизайн</li>
+                        <li>Тестирование</li>
+                    </ul>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-laptop-code"></i>
+                    </div>
+                    <h3>Веб-разработка</h3>
+                    <p>Создание современных, адаптивных веб-сайтов любой сложности на передовых технологиях</p>
+                    <ul class="service-features">
+                        <li>Frontend разработка</li>
+                        <li>Backend разработка</li>
+                        <li>E-commerce решения</li>
+                        <li>Интеграции API</li>
+                    </ul>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <h3>SEO продвижение</h3>
+                    <p>Продвижение сайтов в поисковых системах для увеличения трафика и повышения конверсии</p>
+                    <ul class="service-features">
+                        <li>Аудит сайта</li>
+                        <li>Ключевые слова</li>
+                        <li>Контент-маркетинг</li>
+                        <li>Аналитика и отчеты</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Портфолио -->
+    <section id="portfolio" class="portfolio">
+        <div class="container">
+            <h2 class="section-title">Наши работы</h2>
+            <p class="section-subtitle">Реализованные проекты, которые приносят результат нашим клиентам</p>
+            <div class="portfolio-filters">
+                <button class="filter-btn active" onclick="filterPortfolio('all')">Все проекты</button>
+                <button class="filter-btn" onclick="filterPortfolio('website')">Веб-сайты</button>
+                <button class="filter-btn" onclick="filterPortfolio('ecommerce')">Интернет-магазины</button>
+                <button class="filter-btn" onclick="filterPortfolio('landing')">Лендинги</button>
+            </div>
+            <div class="portfolio-grid" id="portfolio-container">
+                <!-- Работы загружаются динамически -->
+                <div class="portfolio-loader">
+                    <div class="loader"></div>
+                    <p>Загрузка проектов...</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Цены -->
+    <section id="pricing" class="pricing">
+        <div class="container">
+            <h2 class="section-title">Тарифы и цены</h2>
+            <p class="section-subtitle">Выберите подходящий тариф для вашего бизнеса</p>
+            <div class="pricing-container" id="pricing-container">
+                <!-- Тарифы загружаются динамически -->
+                <div class="pricing-loader">
+                    <div class="loader"></div>
+                    <p>Загрузка тарифов...</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Контакты -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2 class="section-title">Свяжитесь с нами</h2>
+            <p class="section-subtitle">Готовы начать проект? Напишите нам!</p>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <div>
+                            <h4>Телефон</h4>
+                            <p>+7 (999) 123-45-67</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <h4>Email</h4>
+                            <p>info@creative-studio.ru</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div>
+                            <h4>Адрес</h4>
+                            <p>Москва, ул. Тверская, д. 10</p>
+                        </div>
+                    </div>
+                </div>
+                <button class="order-btn" onclick="initiateOrder()">
+                    <i class="fas fa-paper-plane"></i> Заказать консультацию
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Подвал -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <h3><i class="fas fa-palette"></i> Creative Studio</h3>
+                    <p>Профессиональные услуги дизайна и веб-разработки</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Быстрые ссылки</h4>
+                    <ul>
+                        <li><a href="#home">Главная</a></li>
+                        <li><a href="#services">Услуги</a></li>
+                        <li><a href="#portfolio">Портфолио</a></li>
+                        <li><a href="#pricing">Цены</a></li>
+                    </ul>
+                </div>
+                <div class="footer-social">
+                    <h4>Мы в соцсетях</h4>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-vk"></i></a>
+                        <a href="#"><i class="fab fa-telegram"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Creative Studio. Все права защищены.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Модальное окно аккаунта -->
+    <div id="account-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="account-content">
+                <h2><i class="fas fa-user-circle"></i> Личный кабинет</h2>
+                <div id="login-form">
+                    <div class="form-group">
+                        <input type="text" id="username" placeholder="Имя пользователя" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" id="password" placeholder="Пароль" required>
+                    </div>
+                    <button onclick="login()" class="primary-btn">
+                        <i class="fas fa-sign-in-alt"></i> Войти
+                    </button>
+                    <div class="form-footer">
+                        <p>Нет аккаунта? <a href="#" onclick="showRegister()">Зарегистрироваться</a></p>
+                    </div>
+                </div>
+                <div id="register-form" style="display:none;">
+                    <div class="form-group">
+                        <input type="text" id="reg-username" placeholder="Имя пользователя" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" id="reg-email" placeholder="Email" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" id="reg-password" placeholder="Пароль" required minlength="6">
+                    </div>
+                    <button onclick="register()" class="primary-btn">
+                        <i class="fas fa-user-plus"></i> Зарегистрироваться
+                    </button>
+                    <div class="form-footer">
+                        <p><a href="#" onclick="showLogin()"><i class="fas fa-arrow-left"></i> Уже есть аккаунт? Войти</a></p>
+                    </div>
+                </div>
+                <div id="user-dashboard" style="display:none;">
+                    <div class="dashboard-header">
+                        <h3><i class="fas fa-user"></i> Добро пожаловать, <span id="user-name"></span>!</h3>
+                        <p class="user-role"><i class="fas fa-shield-alt"></i> Статус: <span id="user-status">пользователь</span></p>
+                    </div>
+                    <div class="dashboard-actions">
+                        <button onclick="openChat()" class="action-btn">
+                            <i class="fas fa-comments"></i> Чат с поддержкой
+                        </button>
+                        <button onclick="viewMyOrders()" class="action-btn">
+                            <i class="fas fa-shopping-cart"></i> Мои заказы
+                        </button>
+                        <button onclick="openSettings()" class="action-btn">
+                            <i class="fas fa-cog"></i> Настройки
+                        </button>
+                        <button onclick="logout()" class="logout-btn">
+                            <i class="fas fa-sign-out-alt"></i> Выйти
+                        </button>
+                    </div>
+                    <div id="admin-actions" style="display:none;">
+                        <hr>
+                        <h4><i class="fas fa-cogs"></i> Административные функции</h4>
+                        <button onclick="openAdminPanel()" class="admin-btn">
+                            <i class="fas fa-tachometer-alt"></i> Админ панель
+                        </button>
+                        <button onclick="viewAllChats()" class="admin-btn">
+                            <i class="fas fa-comments"></i> Все чаты
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Чат с администратором -->
+    <div id="chat-modal" class="modal">
+        <div class="chat-container">
+            <div class="chat-header">
+                <h3><i class="fas fa-comments"></i> Чат с поддержкой</h3>
+                <span class="close-chat">&times;</span>
+            </div>
+            <div class="chat-body">
+                <div class="chat-messages" id="chat-messages">
+                    <div class="welcome-message">
+                        <p>Добро пожаловать в чат поддержки! Мы ответим вам в ближайшее время.</p>
+                    </div>
+                </div>
+                <div class="chat-input-area">
+                    <div class="chat-tools">
+                        <select id="selected-plan" onchange="attachPlanToMessage()">
+                            <option value="">Прикрепить тариф...</option>
+                            <!-- Опции добавляются динамически -->
+                        </select>
+                        <button onclick="toggleEmoji()" class="emoji-btn">
+                            <i class="far fa-smile"></i>
+                        </button>
+                    </div>
+                    <textarea id="message-input" placeholder="Введите сообщение..." rows="3"></textarea>
+                    <div class="chat-controls">
+                        <button onclick="sendMessage()" class="send-btn">
+                            <i class="fas fa-paper-plane"></i> Отправить
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Админ панель -->
+    <div id="admin-panel" class="modal">
+        <div class="panel-content">
+            <span class="close-admin">&times;</span>
+            <h2><i class="fas fa-cogs"></i> Админ панель</h2>
+            
+            <div class="admin-stats" id="admin-stats">
+                <!-- Статистика загружается динамически -->
+            </div>
+            
+            <div class="admin-tabs">
+                <button class="tab-btn active" onclick="switchAdminTab('notifications')">
+                    <i class="fas fa-bell"></i> Уведомления
+                </button>
+                <button class="tab-btn" onclick="switchAdminTab('users')">
+                    <i class="fas fa-users"></i> Пользователи
+                </button>
+                <button class="tab-btn" onclick="switchAdminTab('orders')">
+                    <i class="fas fa-shopping-cart"></i> Заказы
+                </button>
+                <button class="tab-btn" onclick="switchAdminTab('pricing')">
+                    <i class="fas fa-tags"></i> Тарифы
+                </button>
+                <button class="tab-btn" onclick="switchAdminTab('portfolio')">
+                    <i class="fas fa-briefcase"></i> Портфолио
+                </button>
+            </div>
+            
+            <div class="tab-content-container">
+                <div id="admin-notifications" class="tab-content active">
+                    <h3><i class="fas fa-bell"></i> Уведомления системы</h3>
+                    <div id="notification-list">
+                        <!-- Уведомления загружаются динамически -->
+                    </div>
+                </div>
+                
+                <div id="admin-users" class="tab-content">
+                    <h3><i class="fas fa-users"></i> Управление пользователями</h3>
+                    <div class="search-box">
+                        <input type="text" id="user-search" placeholder="Поиск пользователей..." onkeyup="searchUsers()">
+                    </div>
+                    <div id="users-list">
+                        <!-- Список пользователей -->
+                    </div>
+                </div>
+                
+                <div id="admin-orders" class="tab-content">
+                    <h3><i class="fas fa-shopping-cart"></i> Управление заказами</h3>
+                    <div class="order-filters">
+                        <select id="order-filter" onchange="filterOrders()">
+                            <option value="all">Все заказы</option>
+                            <option value="pending">Ожидают</option>
+                            <option value="processing">В работе</option>
+                            <option value="completed">Завершены</option>
+                            <option value="cancelled">Отменены</option>
+                        </select>
+                    </div>
+                    <div id="orders-list">
+                        <!-- Список заказов -->
+                    </div>
+                </div>
+                
+                <div id="admin-pricing-management" class="tab-content">
+                    <h3><i class="fas fa-tags"></i> Управление тарифами</h3>
+                    <div class="form-container">
+                        <form id="pricing-form" class="admin-form">
+                            <div class="form-group">
+                                <input type="text" id="plan-name" placeholder="Название тарифа" required>
+                            </div>
+                            <div class="form-group">
+                                <textarea id="plan-description" placeholder="Описание тарифа" required rows="3"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <input type="number" id="plan-price" placeholder="Цена (руб.)" required min="0">
+                            </div>
+                            <div class="form-group">
+                                <textarea id="plan-features" placeholder="Особенности (каждая с новой строки)" rows="4"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>
+                                    <input type="checkbox" id="plan-active" checked> Активный тариф
+                                </label>
+                            </div>
+                            <button type="submit" class="primary-btn">
+                                <i class="fas fa-plus"></i> Добавить тариф
+                            </button>
+                        </form>
+                    </div>
+                    <div id="current-pricing-list">
+                        <!-- Список тарифов -->
+                    </div>
+                </div>
+                
+                <div id="admin-portfolio" class="tab-content">
+                    <h3><i class="fas fa-briefcase"></i> Управление портфолио</h3>
+                    <div class="form-container">
+                        <form id="portfolio-form" class="admin-form">
+                            <div class="form-group">
+                                <input type="text" id="project-title" placeholder="Название проекта" required>
+                            </div>
+                            <div class="form-group">
+                                <textarea id="project-description" placeholder="Описание проекта" required rows="3"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="project-image" placeholder="URL изображения">
+                            </div>
+                            <div class="form-group">
+                                <select id="project-category">
+                                    <option value="website">Веб-сайт</option>
+                                    <option value="ecommerce">Интернет-магазин</option>
+                                    <option value="landing">Лендинг</option>
+                                    <option value="corporate">Корпоративный сайт</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="primary-btn">
+                                <i class="fas fa-plus"></i> Добавить проект
+                            </button>
+                        </form>
+                    </div>
+                    <div id="portfolio-management-list">
+                        <!-- Список проектов -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Уведомления -->
+    <div id="notification-toast"></div>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
